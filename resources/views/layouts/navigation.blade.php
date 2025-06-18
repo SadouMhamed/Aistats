@@ -21,6 +21,13 @@
                         📁 {{ __('Mes Fichiers') }}
                     </x-nav-link>
 
+                    <!-- User Received Files Link -->
+                    @if(!auth()->user()->isAdmin())
+                        <x-nav-link :href="route('received_files.index')" :active="request()->routeIs('received_files.*')">
+                            📨 {{ __('Fichiers Reçus') }}
+                        </x-nav-link>
+                    @endif
+
                     <!-- Admin Navigation Links -->
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                     
@@ -49,6 +56,13 @@
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('admin.files.stats')">
                                     📊 {{ __('Statistiques fichiers') }}
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-100"></div>
+                                <x-dropdown-link :href="route('admin.send_file')">
+                                    📤 {{ __('Envoyer un fichier') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.sent_files')">
+                                    📋 {{ __('Fichiers envoyés') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -92,6 +106,11 @@
                         <x-dropdown-link :href="route('files.create')">
                             ⬆️ {{ __('Télécharger un fichier') }}
                         </x-dropdown-link>
+                        @if(!auth()->user()->isAdmin())
+                            <x-dropdown-link :href="route('received_files.index')">
+                                📨 {{ __('Fichiers Reçus') }}
+                            </x-dropdown-link>
+                        @endif
 
                         <!-- Admin Quick Links -->
                         @if(auth()->user()->isAdmin())
@@ -110,6 +129,13 @@
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('admin.files.stats')">
                                 📊 {{ __('Statistiques fichiers') }}
+                            </x-dropdown-link>
+                            <div class="border-t border-gray-100"></div>
+                            <x-dropdown-link :href="route('admin.send_file')">
+                                📤 {{ __('Envoyer un fichier') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('admin.sent_files')">
+                                📋 {{ __('Fichiers envoyés') }}
                             </x-dropdown-link>
                         @endif
 
@@ -151,6 +177,13 @@
             <x-responsive-nav-link :href="route('files.index')" :active="request()->routeIs('files.*')">
                 📁 {{ __('Mes Fichiers') }}
             </x-responsive-nav-link>
+            
+            <!-- User Received Files Link for Mobile -->
+            @if(!auth()->user()->isAdmin())
+                <x-responsive-nav-link :href="route('received_files.index')" :active="request()->routeIs('received_files.*')">
+                    📨 {{ __('Fichiers Reçus') }}
+                </x-responsive-nav-link>
+            @endif
 
             <!-- Admin Links for Mobile -->
             @if(auth()->user()->isAdmin())
@@ -169,6 +202,12 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.files.stats')" :active="request()->routeIs('admin.files.stats')">
                         📊 {{ __('Statistiques fichiers') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.send_file')" :active="request()->routeIs('admin.send_file')">
+                        📤 {{ __('Envoyer un fichier') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.sent_files')" :active="request()->routeIs('admin.sent_files')">
+                        📋 {{ __('Fichiers envoyés') }}
                     </x-responsive-nav-link>
                 </div>
             @endif

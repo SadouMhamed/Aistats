@@ -88,7 +88,7 @@
                                         @case('csv')
                                             📋
                                             @break
-                                        @case('sps')
+                                        @case('spss')
                                             🔢
                                             @break
                                         @default

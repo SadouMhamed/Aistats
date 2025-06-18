@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\UserReceivedFileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -18,6 +20,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/files/{file}', [AdminController::class, 'deleteFile'])->name('admin.files.delete');
     Route::get('/users/{user}', [AdminController::class, 'show'])->name('admin.users.show');
     Route::get('/users/{user}/pdf', [AdminController::class, 'downloadPDF'])->name('admin.users.pdf');
+    Route::post('/users/{user}/update-payment-status', [AdminController::class, 'updatePaymentStatus'])->name('admin.users.update_payment_status');
+    
+    // Admin file sending routes
+    Route::get('/send-file', [AdminController::class, 'showSendFileForm'])->name('admin.send_file');
+    Route::post('/send-file', [AdminController::class, 'sendFileToUser'])->name('admin.send_file.store');
+    Route::get('/sent-files', [AdminController::class, 'sentFiles'])->name('admin.sent_files');
+    Route::delete('/sent-files/{adminUserFile}', [AdminController::class, 'deleteSentFile'])->name('admin.sent_files.delete');
 });
 
 // File Management Routes
@@ -32,8 +41,18 @@ Route::middleware('auth')->prefix('files')->group(function () {
     Route::get('/{file}/download', [FileController::class, 'download'])->name('files.download');
 });
 
+// User received files routes
+Route::middleware('auth')->prefix('received-files')->group(function () {
+    Route::get('/', [UserReceivedFileController::class, 'index'])->name('received_files.index');
+    Route::get('/{adminUserFile}', [UserReceivedFileController::class, 'show'])->name('received_files.show');
+    Route::get('/{adminUserFile}/download', [UserReceivedFileController::class, 'download'])->name('received_files.download');
+});
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (Auth::user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('files.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

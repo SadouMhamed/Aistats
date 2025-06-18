@@ -27,6 +27,9 @@ class User extends Authenticatable
         'password',
         'role',
         'pack',
+        'meeting_preference',
+        'payment_preference',
+        'payment_status',
     ];
 
     /**
@@ -82,5 +85,21 @@ class User extends Authenticatable
     public function files()
     {
         return $this->hasMany(File::class);
+    }
+
+    /**
+     * Get files sent by this user (if admin) to other users
+     */
+    public function sentFiles()
+    {
+        return $this->hasMany(AdminUserFile::class, 'admin_id');
+    }
+
+    /**
+     * Get files received by this user from admin
+     */
+    public function receivedFiles()
+    {
+        return $this->hasMany(AdminUserFile::class, 'user_id');
     }
 }

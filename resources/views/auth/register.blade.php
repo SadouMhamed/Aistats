@@ -78,6 +78,38 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Meeting Preference -->
+        <div class="mt-4">
+            <x-input-label value="Préférence de réunion" />
+            <div class="mt-2 space-y-2">
+                <label for="meeting_online" class="inline-flex items-center">
+                    <input id="meeting_online" type="radio" class="form-radio" name="meeting_preference" value="en ligne" required>
+                    <span class="ml-2">En ligne</span>
+                </label>
+                <label for="meeting_in_person" class="inline-flex items-center ml-4">
+                    <input id="meeting_in_person" type="radio" class="form-radio" name="meeting_preference" value="en présentiel">
+                    <span class="ml-2">En présentiel</span>
+                </label>
+            </div>
+            <x-input-error :messages="$errors->get('meeting_preference')" class="mt-2" />
+        </div>
+
+        <!-- Payment Preference -->
+        <div class="mt-4">
+            <x-input-label value="Préférence de paiement" />
+            <div class="mt-2 space-y-2">
+                <label for="payment_online" class="inline-flex items-center">
+                    <input id="payment_online" type="radio" class="form-radio" name="payment_preference" value="en ligne" required>
+                    <span class="ml-2">En ligne</span>
+                </label>
+                <label for="payment_in_person" class="inline-flex items-center ml-4">
+                    <input id="payment_in_person" type="radio" class="form-radio" name="payment_preference" value="main à main">
+                    <span class="ml-2">Main à main</span>
+                </label>
+            </div>
+            <x-input-error :messages="$errors->get('payment_preference')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Déjà inscrit?') }}

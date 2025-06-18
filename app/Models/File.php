@@ -54,14 +54,14 @@ class File extends Model
     /**
      * Get file type icon
      */
-    public function getFileIconAttribute(): string
+    public function getIconAttribute(): string
     {
         return match ($this->file_extension) {
             'pdf' => '📄',
             'xlsx', 'xls' => '📊',
             'docx', 'doc' => '📝',
             'csv' => '📋',
-            'sps' => '🔢',
+            'spss' => '🔢',
             default => '📁'
         };
     }
@@ -75,10 +75,23 @@ class File extends Model
     }
 
     /**
-     * Check if file is supported
+     * Get the list of supported file extensions
      */
     public static function getSupportedExtensions(): array
     {
-        return ['pdf', 'xlsx', 'xls', 'docx', 'doc', 'csv', 'sps'];
+        return ['pdf', 'xlsx', 'xls', 'docx', 'doc', 'csv', 'spss'];
+    }
+
+    public static function getIconMap(): array
+    {
+        return [
+            'pdf' => '📄',
+            'xlsx' => '📊',
+            'xls' => '📊',
+            'docx' => '📝',
+            'doc' => '📝',
+            'csv' => '📋',
+            'spss' => '🔢',
+        ];
     }
 }

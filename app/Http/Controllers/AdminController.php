@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\File;
+use App\Models\AdminUserFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 
@@ -135,5 +137,96 @@ class AdminController extends Controller
         $pdf = Pdf::loadView('admin.user-detail-pdf', compact('user'));
         $fileName = 'user-details-' . $user->id . '-' . Str::slug($user->name) . '.pdf';
         return $pdf->download($fileName);
+    }
+
+    /**
+     * Update user payment status.
+     */
+    public function updatePaymentStatus(Request $request, User $user)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:En attente,Payé,Échoué,Annulé,Remboursé'
+        ]);
+
+        $user->update(['payment_status' => $request->payment_status]);
+
+        return redirect()->back()->with('success', 'Statut de paiement mis à jour avec succès!');
+    }
+
+    /**
+     * Show form to send file to user
+     */
+    public function showSendFileForm()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.send-file', compact('users'));
+    }
+
+    /**
+     * Send file to a specific user
+     */
+    public function sendFileToUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,csv,spss|max:10240',
+            'message' => 'nullable|string|max:500'
+        ]);
+
+        $file = $request->file('file');
+        $originalName = $file->getClientOriginalName();
+        $fileExtension = $file->getClientOriginalExtension();
+        $fileName = time() . '_' . Str::random(10) . '.' . $fileExtension;
+        
+        // Store the file
+        $filePath = $file->storeAs('admin_files', $fileName, 'public');
+
+        // Create database record
+        AdminUserFile::create([
+            'admin_id' => Auth::id(),
+            'user_id' => $request->user_id,
+            'original_name' => $originalName,
+            'file_path' => $filePath,
+            'file_type' => $file->getMimeType(),
+            'file_size' => $file->getSize(),
+            'message' => $request->message,
+        ]);
+
+        $user = User::find($request->user_id);
+        return redirect()->back()->with('success', "Fichier envoyé avec succès à {$user->name}!");
+    }
+
+    /**
+     * Show files sent to users
+     */
+    public function sentFiles()
+    {
+        $sentFiles = AdminUserFile::with(['user', 'admin'])
+            ->where('admin_id', Auth::id())
+            ->latest()
+            ->paginate(15);
+
+        return view('admin.sent-files', compact('sentFiles'));
+    }
+
+    /**
+     * Delete a sent file
+     */
+    public function deleteSentFile(AdminUserFile $adminUserFile)
+    {
+        // Check if current admin is the one who sent the file
+        if ($adminUserFile->admin_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Delete the physical file
+        if (Storage::disk('public')->exists($adminUserFile->file_path)) {
+            Storage::disk('public')->delete($adminUserFile->file_path);
+        }
+
+        // Delete the database record
+        $adminUserFile->delete();
+
+        return redirect()->back()->with('success', 'Fichier supprimé avec succès!');
     }
 }

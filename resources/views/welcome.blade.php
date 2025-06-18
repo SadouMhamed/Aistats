@@ -72,7 +72,7 @@
                                 </div>
                                 Téléchargement multi-format
                             </dt>
-                            <dd class="mt-2 text-base leading-7 text-gray-600">Importez facilement vos fichiers de données, y compris Excel (.xlsx, .xls), CSV, PDF, Word et même les fichiers statistiques SPSS (.sps).</dd>
+                            <dd class="mt-2 text-base leading-7 text-gray-600">Importez facilement vos fichiers de données, y compris Excel (.xlsx, .xls), CSV, PDF, Word et même les fichiers statistiques SPSS (.spss).</dd>
                         </div>
                         <div class="relative pl-16">
                             <dt class="text-base font-semibold leading-7 text-gray-900">

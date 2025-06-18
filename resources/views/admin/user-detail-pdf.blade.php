@@ -51,6 +51,22 @@
             </tr>
         </table>
 
+        <h2 class="section-title">Préférences de l'utilisateur</h2>
+        <table class="details-grid">
+            <tr>
+                <td class="label">Préférence de réunion:</td>
+                <td>{{ $user->meeting_preference ?? 'Non spécifié' }}</td>
+            </tr>
+            <tr>
+                <td class="label">Préférence de paiement:</td>
+                <td>{{ $user->payment_preference ?? 'Non spécifié' }}</td>
+            </tr>
+            <tr>
+                <td class="label">État du paiement:</td>
+                <td>{{ $user->payment_status ?? 'Non spécifié' }}</td>
+            </tr>
+        </table>
+
         <h2 class="section-title">Informations Personnelles</h2>
         <table class="details-grid">
             <tr>

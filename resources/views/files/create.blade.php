@@ -25,12 +25,12 @@
                                     <div class="flex text-sm text-gray-600">
                                         <label for="file" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                                             <span>Télécharger un fichier</span>
-                                            <input id="file" name="file" type="file" class="sr-only" accept=".pdf,.xlsx,.xls,.docx,.doc,.csv,.sps" required>
+                                            <input id="file" name="file" type="file" class="sr-only" accept=".pdf,.xlsx,.xls,.docx,.doc,.csv,.spss" required>
                                         </label>
                                         <p class="pl-1">ou glisser-déposer</p>
                                     </div>
                                     <p class="text-xs text-gray-500">
-                                        Fichiers supportés: PDF, Excel (XLSX, XLS), Word (DOCX, DOC), CSV, SPS
+                                        Fichiers supportés: PDF, Excel (XLSX, XLS), Word (DOCX, DOC), CSV, SPSS
                                     </p>
                                     <p class="text-xs text-gray-500">
                                         Taille maximum: 10MB
@@ -91,7 +91,7 @@
                                                 @case('csv')
                                                     📋
                                                     @break
-                                                @case('sps')
+                                                @case('spss')
                                                     🔢
                                                     @break
                                                 @default
@@ -144,7 +144,7 @@
                     'docx': '📝',
                     'doc': '📝',
                     'csv': '📋',
-                    'sps': '🔢'
+                    'spss': '🔢'
                 };
                 return icons[extension.toLowerCase()] || '📁';
             }

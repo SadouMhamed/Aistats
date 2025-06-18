@@ -33,11 +33,13 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'profession' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'string', 'max:20'],
+            'profession' => ['nullable', 'string', 'max:255'],
+            'telephone' => ['nullable', 'string', 'max:20'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'pack' => ['nullable', 'string', 'in:Pack Essentiel,Pack Protocole,Pack Méthodo,Pack Expert'],
+            'pack' => ['nullable', 'string', 'max:255'],
+            'meeting_preference' => ['required', 'string', 'in:en ligne,en présentiel'],
+            'payment_preference' => ['required', 'string', 'in:en ligne,main à main'],
         ]);
 
         $user = User::create([
@@ -49,6 +51,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'pack' => $request->pack,
+            'meeting_preference' => $request->meeting_preference,
+            'payment_preference' => $request->payment_preference,
         ]);
 
         event(new Registered($user));

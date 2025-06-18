@@ -39,10 +39,10 @@ class FileController extends Controller
             'file' => [
                 'required',
                 'file',
-                'max:10240', // 10MB max
-                'mimes:pdf,xlsx,xls,docx,doc,csv,sps'
+                'max:10240', // 10 MB
+                'mimes:pdf,xlsx,xls,docx,doc,csv,spss'
             ],
-            'description' => 'nullable|string|max:500'
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $uploadedFile = $request->file('file');

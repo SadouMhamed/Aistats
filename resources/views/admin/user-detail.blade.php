@@ -49,6 +49,18 @@
                             </dl>
                         </div>
                     </div>
+                    
+                    {{-- User Preferences --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-600">Préférences</h4>
+                            <dl class="mt-2 divide-y divide-gray-200">
+                                <div class="py-2 flex justify-between"><dt class="text-sm text-gray-500">Réunion</dt><dd class="text-sm font-medium text-gray-800">{{ $user->meeting_preference ?? 'N/A' }}</dd></div>
+                                <div class="py-2 flex justify-between"><dt class="text-sm text-gray-500">Paiement</dt><dd class="text-sm font-medium text-gray-800">{{ $user->payment_preference ?? 'N/A' }}</dd></div>
+                                <div class="py-2 flex justify-between"><dt class="text-sm text-gray-500">État Paiement</dt><dd class="text-sm font-medium text-gray-800">{{ $user->payment_status ?? 'N/A' }}</dd></div>
+                            </dl>
+                        </div>
+                    </div>
 
                     {{-- User Files List --}}
                     <div class="mt-8">

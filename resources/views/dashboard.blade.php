@@ -54,7 +54,7 @@
                                     <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">EXCEL</span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">WORD</span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">CSV</span>
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">SPS</span>
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">SPSS</span>
                                 </span>
                             </p>
                         </div>
