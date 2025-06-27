@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\UserReceivedFileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,6 +36,7 @@ Route::middleware('auth')->prefix('files')->group(function () {
     Route::get('/', [FileController::class, 'index'])->name('files.index');
     Route::get('/create', [FileController::class, 'create'])->name('files.create');
     Route::post('/', [FileController::class, 'store'])->name('files.store');
+    Route::get('/pdf-report', [FileController::class, 'generatePDF'])->name('files.pdf');
     Route::get('/{file}', [FileController::class, 'show'])->name('files.show');
     Route::get('/{file}/edit', [FileController::class, 'edit'])->name('files.edit');
     Route::patch('/{file}', [FileController::class, 'update'])->name('files.update');
@@ -49,12 +51,13 @@ Route::middleware('auth')->prefix('received-files')->group(function () {
     Route::get('/{adminUserFile}/download', [UserReceivedFileController::class, 'download'])->name('received_files.download');
 });
 
-Route::get('/dashboard', function () {
-    if (Auth::user()->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-    return redirect()->route('files.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::get('/user-dashboard', [DashboardController::class, 'userView'])
+    ->middleware(['auth'])
+    ->name('user.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -6,7 +6,9 @@ use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FileController extends Controller
 {
@@ -80,11 +82,31 @@ class FileController extends Controller
             abort(403, 'Accès non autorisé');
         }
 
+        // Debug information
+        Log::info('Download attempt', [
+            'file_id' => $file->id,
+            'file_path' => $file->file_path,
+            'full_path' => storage_path('app/public/' . $file->file_path),
+            'exists' => Storage::disk('public')->exists($file->file_path)
+        ]);
+
         if (!Storage::disk('public')->exists($file->file_path)) {
-            return redirect()->back()->with('error', 'Fichier non trouvé');
+            Log::error('File not found', [
+                'file_path' => $file->file_path,
+                'storage_path' => storage_path('app/public/' . $file->file_path)
+            ]);
+            return redirect()->back()->with('error', 'Fichier non trouvé sur le serveur. Chemin: ' . $file->file_path);
         }
 
-        return Storage::disk('public')->download($file->file_path, $file->original_name);
+        try {
+            return Storage::disk('public')->download($file->file_path, $file->original_name);
+        } catch (\Exception $e) {
+            Log::error('Download failed', [
+                'error' => $e->getMessage(),
+                'file_path' => $file->file_path
+            ]);
+            return redirect()->back()->with('error', 'Erreur lors du téléchargement: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -155,5 +177,27 @@ class FileController extends Controller
 
         return redirect()->route('files.index')
             ->with('success', 'Fichier supprimé avec succès!');
+    }
+
+    /**
+     * Generate PDF report of all user files
+     */
+    public function generatePDF()
+    {
+        $user = Auth::user();
+        $files = $user->files()->latest()->get();
+        
+        // Calculate totals
+        $totalFiles = $files->count();
+        $totalSize = $files->sum('file_size');
+        $fileTypes = $files->groupBy('file_extension')->map(function ($group) {
+            return $group->count();
+        });
+
+        $pdf = Pdf::loadView('files.pdf-report', compact('user', 'files', 'totalFiles', 'totalSize', 'fileTypes'));
+        
+        $fileName = 'mes-fichiers-' . Str::slug($user->name) . '-' . now()->format('Y-m-d') . '.pdf';
+        
+        return $pdf->download($fileName);
     }
 }

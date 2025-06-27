@@ -4,9 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Mes Fichiers') }}
             </h2>
-            <a href="{{ route('files.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                Télécharger un fichier
-            </a>
+            <div class="flex space-x-3">
+                <a href="{{ route('files.pdf') }}" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 {{ $files->count() == 0 ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $files->count() == 0 ? 'onclick="event.preventDefault(); alert(\'Aucun fichier à exporter. Uploadez d\'abord des fichiers.\')"' : '' }}>
+                    📄 Rapport PDF
+                </a>
+                <a href="{{ route('files.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    📁 Télécharger un fichier
+                </a>
+            </div>
         </div>
     </x-slot>
 

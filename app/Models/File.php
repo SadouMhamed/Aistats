@@ -44,7 +44,7 @@ class File extends Model
         $bytes = $this->file_size;
         $units = ['B', 'KB', 'MB', 'GB'];
         
-        for ($i = 0; $bytes > 1024; $i++) {
+        for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
         
@@ -64,6 +64,14 @@ class File extends Model
             'spss' => '🔢',
             default => '📁'
         };
+    }
+
+    /**
+     * Get file icon (alias for consistency with views)
+     */
+    public function getFileIconAttribute(): string
+    {
+        return $this->getIconAttribute();
     }
 
     /**
