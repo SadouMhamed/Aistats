@@ -32,6 +32,11 @@ class UserReceivedFileController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
+        // Check if download permission is granted
+        if (!$adminUserFile->download_permission) {
+            return redirect()->back()->with('error', 'Vous n\'avez pas encore la permission de voir ce fichier. Contactez l\'administrateur.');
+        }
+
         // Mark as read
         if (!$adminUserFile->is_read) {
             $adminUserFile->update(['is_read' => true]);
@@ -48,6 +53,11 @@ class UserReceivedFileController extends Controller
         // Check if the file belongs to the current user
         if ($adminUserFile->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access.');
+        }
+
+        // Check if download permission is granted
+        if (!$adminUserFile->download_permission) {
+            return redirect()->back()->with('error', 'Vous n\'avez pas encore la permission de télécharger ce fichier. Contactez l\'administrateur.');
         }
 
         // Check if file exists

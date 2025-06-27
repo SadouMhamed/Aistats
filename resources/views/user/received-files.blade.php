@@ -22,11 +22,22 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            @if(!$file->is_read)
-                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                                    Nouveau
-                                                </span>
-                                            @endif
+                                            <div class="flex items-center space-x-2">
+                                                @if(!$file->is_read)
+                                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                                        Nouveau
+                                                    </span>
+                                                @endif
+                                                @if($file->download_permission)
+                                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                        ✓ Autorisé
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                                        🔒 En attente
+                                                    </span>
+                                                @endif
+                                            </div>
                                         </div>
                                         
                                         <h3 class="text-lg font-medium text-gray-900 mb-2">
@@ -49,15 +60,36 @@
                                         @endif
 
                                         <div class="flex space-x-3">
-                                            <a href="{{ route('received_files.show', $file) }}" 
-                                               class="flex-1 bg-blue-500 hover:bg-blue-700 text-white text-center py-2 px-4 rounded text-sm">
-                                                Voir
-                                            </a>
-                                            <a href="{{ route('received_files.download', $file) }}" 
-                                               class="flex-1 bg-green-500 hover:bg-green-700 text-white text-center py-2 px-4 rounded text-sm">
-                                                Télécharger
-                                            </a>
+                                            @if($file->download_permission)
+                                                <a href="{{ route('received_files.show', $file) }}" 
+                                                   class="flex-1 bg-blue-500 hover:bg-blue-700 text-white text-center py-2 px-4 rounded text-sm">
+                                                    Voir
+                                                </a>
+                                                <a href="{{ route('received_files.download', $file) }}" 
+                                                   class="flex-1 bg-green-500 hover:bg-green-700 text-white text-center py-2 px-4 rounded text-sm">
+                                                    Télécharger
+                                                </a>
+                                            @else
+                                                <button disabled 
+                                                        class="flex-1 bg-gray-300 text-gray-500 text-center py-2 px-4 rounded text-sm cursor-not-allowed" 
+                                                        title="En attente d'autorisation de l'administrateur">
+                                                    Voir
+                                                </button>
+                                                <button disabled 
+                                                        class="flex-1 bg-gray-300 text-gray-500 text-center py-2 px-4 rounded text-sm cursor-not-allowed" 
+                                                        title="En attente d'autorisation de l'administrateur">
+                                                    Télécharger
+                                                </button>
+                                            @endif
                                         </div>
+
+                                        @if(!$file->download_permission)
+                                            <div class="mt-3 text-center">
+                                                <p class="text-xs text-orange-600">
+                                                    🔒 En attente d'autorisation de l'administrateur
+                                                </p>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

@@ -190,6 +190,7 @@ class AdminController extends Controller
             'file_type' => $file->getMimeType(),
             'file_size' => $file->getSize(),
             'message' => $request->message,
+            'download_permission' => false, // Default to no permission
         ]);
 
         $user = User::find($request->user_id);
@@ -207,6 +208,26 @@ class AdminController extends Controller
             ->paginate(15);
 
         return view('admin.sent-files', compact('sentFiles'));
+    }
+
+    /**
+     * Toggle download permission for a sent file
+     */
+    public function toggleDownloadPermission(AdminUserFile $adminUserFile)
+    {
+        // Check if current admin is the one who sent the file
+        if ($adminUserFile->admin_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $adminUserFile->update([
+            'download_permission' => !$adminUserFile->download_permission
+        ]);
+
+        $status = $adminUserFile->download_permission ? 'autorisé' : 'restreint';
+        $user = $adminUserFile->user;
+
+        return redirect()->back()->with('success', "Téléchargement {$status} pour {$user->name}!");
     }
 
     /**

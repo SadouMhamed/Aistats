@@ -40,6 +40,9 @@
                                             Statut
                                         </th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Permission de téléchargement
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Date d'envoi
                                         </th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -88,6 +91,27 @@
                                                         Non lu
                                                     </span>
                                                 @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center space-x-2">
+                                                    @if($file->download_permission)
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                            ✓ Autorisé
+                                                        </span>
+                                                    @else
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                                            🔒 Bloqué
+                                                        </span>
+                                                    @endif
+                                                    
+                                                    <form action="{{ route('admin.sent_files.toggle_permission', $file) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        <button type="submit" 
+                                                                class="text-sm {{ $file->download_permission ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900' }}">
+                                                            {{ $file->download_permission ? 'Bloquer' : 'Autoriser' }}
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {{ $file->created_at->format('d/m/Y H:i') }}

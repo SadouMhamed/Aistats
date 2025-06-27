@@ -27,6 +27,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/send-file', [AdminController::class, 'sendFileToUser'])->name('admin.send_file.store');
     Route::get('/sent-files', [AdminController::class, 'sentFiles'])->name('admin.sent_files');
     Route::delete('/sent-files/{adminUserFile}', [AdminController::class, 'deleteSentFile'])->name('admin.sent_files.delete');
+    Route::post('/sent-files/{adminUserFile}/toggle-permission', [AdminController::class, 'toggleDownloadPermission'])->name('admin.sent_files.toggle_permission');
 });
 
 // File Management Routes

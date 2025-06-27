@@ -17,11 +17,13 @@ class AdminUserFile extends Model
         'file_type',
         'file_size',
         'message',
-        'is_read'
+        'is_read',
+        'download_permission'
     ];
 
     protected $casts = [
         'is_read' => 'boolean',
+        'download_permission' => 'boolean',
     ];
 
     public function admin()
