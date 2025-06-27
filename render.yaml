@@ -38,9 +38,9 @@ services:
       - key: SUPABASE_URL
         value: https://hrjjjaxmdvhabzbkwbgg.supabase.co
       - key: SUPABASE_ANON_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyampqYXhtZHZoYWJ6Ymt3YmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzNDA5MjIsImV4cCI6MjA1MDkxNjkyMn0.wH4hQZY4EJbJh6-gFG1_MZ3WJNlq9YXmBxmGILvTWBQ
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyampqYXhtZHZoYWJ6Ymt3YmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEwNjI4NjQsImV4cCI6MjA2NjYzODg2NH0.m_6Ruc9k0Js6Nu4PSjUG86BDnEm5YXOb81ldBDE5hb8
       - key: SUPABASE_SERVICE_ROLE_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyampqYXhtZHZoYWJ6Ymt3YmdnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNTM0MDkyMiwiZXhwIjoyMDUwOTE2OTIyfQ.YcJhYJBZJLN9YF5Ng67WjJZ4n7TcpK3-2z5OvXZvAko
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyampqYXhtZHZoYWJ6Ymt3YmdnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTA2Mjg2NCwiZXhwIjoyMDY2NjM4ODY0fQ.m51UsEoq3eLOQLjQy06tDfEli9s7J87RGMYHtuqCMpM
 
       # Application Configuration
       - key: BROADCAST_DRIVER
