@@ -4,10 +4,6 @@
 
 echo "🚀 Building Laravel application for Vercel..."
 
-# Install PHP dependencies
-echo "📦 Installing Composer dependencies..."
-composer install --optimize-autoloader --no-dev --no-scripts --no-progress
-
 # Create required directories
 echo "📁 Creating required directories..."
 mkdir -p storage/framework/{cache,sessions,views}
@@ -19,23 +15,24 @@ echo "🔐 Setting permissions..."
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
 
+# Install PHP dependencies
+echo "📦 Installing Composer dependencies..."
+composer install --optimize-autoloader --no-dev --no-scripts --no-progress
+
 # Generate application key if not exists
 if [ ! -f .env ]; then
     echo "🔑 Generating application key..."
     php artisan key:generate --no-interaction
 fi
 
-# Clear and optimize
-echo "🧹 Clearing and optimizing caches..."
+# Clear and optimize for serverless
+echo "🧹 Clearing caches..."
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
-php artisan cache:clear
 
-# Cache for production
-echo "⚡ Caching for production..."
+# Cache config for production
+echo "⚡ Caching configuration..."
 php artisan config:cache
-php artisan route:cache
-php artisan view:cache
 
 echo "✅ Build completed successfully!" 
