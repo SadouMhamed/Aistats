@@ -1,11 +1,10 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "api/index.php",
-            "use": "vercel-php@0.6.0"
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.6.0"
         }
-    ],
+    },
     "routes": [
         {
             "src": "/(css|js|images|favicon.ico|robots.txt|.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
@@ -20,11 +19,6 @@
         "APP_ENV": "production",
         "APP_DEBUG": "false",
         "VERCEL_DEBUG": "1"
-    },
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.6.0"
-        }
     },
     "buildCommand": "bash vercel-build.sh"
 }
