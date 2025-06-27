@@ -6,8 +6,11 @@ services:
     branch: main
     repo: https://github.com/SadouMhamed/Aistats
     buildCommand: |
-      composer install
+      composer install --no-dev --optimize-autoloader
+      php artisan storage:link
       php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
       php artisan migrate --force
     startCommand: apache2-foreground
     envVars:
@@ -29,3 +32,13 @@ services:
         value: 2d1OKOmNxHFlG8JQFp2ryH8tdXxbxHh8
       - key: SESSION_DRIVER
         value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: APP_DEBUG
+        value: false
+      - key: FILESYSTEM_DISK
+        value: public
