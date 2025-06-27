@@ -15,10 +15,6 @@
             "dest": "api/index.php"
         }
     ],
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "VERCEL_DEBUG": "1"
-    },
-    "buildCommand": "bash vercel-build.sh"
+    "buildCommand": "bash vercel-build.sh",
+    "installCommand": "composer install --optimize-autoloader --no-dev"
 }
