@@ -13,4 +13,6 @@
 /phpunit.xml
 /supabase/.temp
 /vendor/bin
-*.log 
+*.log
+package.json
+package-lock.json 
