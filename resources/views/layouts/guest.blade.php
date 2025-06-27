@@ -12,7 +12,21 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if(app()->environment('production') && file_exists(public_path('build/manifest.json')))
+            @php
+                $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
+                $jsFile = $manifest['resources/js/app.js']['file'] ?? null;
+            @endphp
+            @if($cssFile)
+                <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
+            @endif
+            @if($jsFile)
+                <script type="module" src="{{ asset('build/' . $jsFile) }}"></script>
+            @endif
+        @else
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @endif
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
