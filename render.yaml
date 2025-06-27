@@ -5,22 +5,27 @@ services:
     plan: free
     branch: main
     repo: https://github.com/SadouMhamed/Aistats
-    buildCommand: "composer install && php artisan config:cache && php artisan migrate --force"
-    startCommand: "php artisan serve --host=0.0.0.0 --port=10000"
+    buildCommand: |
+      composer install
+      php artisan config:cache
+      php artisan migrate --force
+    startCommand: apache2-foreground
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        sync: false
+        value: base64:x8EWUkuQQtgku9NEu+6d01ETJ4zYi0P3sQOzH2tEANA=
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
-        value: à_remplir
+        value: dpg-d1fbq0je5dus73fqpo0g-a
       - key: DB_PORT
         value: 5432
       - key: DB_DATABASE
-        value: à_remplir
+        value: walidpostgres
       - key: DB_USERNAME
-        value: à_remplir
+        value: walidpostgres_user
       - key: DB_PASSWORD
-        value: à_remplir
+        value: 2d1OKOmNxHFlG8JQFp2ryH8tdXxbxHh8
+      - key: SESSION_DRIVER
+        value: database
