@@ -1,0 +1,16 @@
+/node_modules
+/tests
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+/.env
+/.env.local
+/.env.testing
+/.git
+/.github
+/README.md
+/phpunit.xml
+/supabase/.temp
+/vendor/bin
+*.log 
