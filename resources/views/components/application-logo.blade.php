@@ -9,7 +9,7 @@
 @else
     {{-- Logo de remplacement avec le nom de l'entreprise --}}
     <div {{ $attributes->merge(['class' => 'flex items-center ' . $class]) }}>
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-3 py-2 rounded-lg">
+        <div class="px-3 py-2 font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg">
             <span class="text-lg">📊</span>
             <span class="ml-1">{{ config('app.name', 'NvAiStat') }}</span>
         </div>
