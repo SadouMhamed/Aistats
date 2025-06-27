@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Vercel build script for Laravel
+# Vercel build script for Laravel (frontend assets pre-built)
 
 echo "🚀 Building Laravel application for Vercel..."
 
@@ -15,9 +15,17 @@ echo "🔐 Setting permissions..."
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
 
-# Install PHP dependencies
+# Install PHP dependencies only
 echo "📦 Installing Composer dependencies..."
 composer install --optimize-autoloader --no-dev --no-scripts --no-progress
+
+# Verify frontend assets exist
+echo "🎨 Checking frontend assets..."
+if [ -d "public/build" ]; then
+    echo "✅ Frontend assets found in public/build/"
+else
+    echo "⚠️ Warning: Frontend assets not found!"
+fi
 
 # Generate application key if not exists
 if [ ! -f .env ]; then
@@ -35,4 +43,4 @@ php artisan view:clear
 echo "⚡ Caching configuration..."
 php artisan config:cache
 
-echo "✅ Build completed successfully!" 
+echo "✅ Laravel build completed successfully!" 

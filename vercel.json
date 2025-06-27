@@ -22,6 +22,5 @@
             "dest": "api/index.php"
         }
     ],
-    "buildCommand": "npm run build && bash vercel-build.sh",
-    "installCommand": "npm install && composer install --optimize-autoloader --no-dev"
+    "buildCommand": "bash vercel-build.sh"
 }
