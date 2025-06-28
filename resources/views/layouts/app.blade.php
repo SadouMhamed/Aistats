@@ -20,7 +20,7 @@
 
         <!-- Scripts -->
         @if(app()->environment('production'))
-            <!-- Production Assets with enhanced Render.com compatibility -->
+            <!-- Production Assets with Render.com compatibility + CDN Fallback -->
             @php
                 $baseUrl = config('app.url') ?: ('https://' . request()->getHost());
                 $baseUrl = str_replace('http://', 'https://', $baseUrl);
@@ -43,8 +43,24 @@
                 $jsUrl = $baseUrl . '/build/' . $jsFile;
             @endphp
             
-            <!-- CSS Asset -->
-            <link rel="stylesheet" href="{{ $cssUrl }}">
+            <!-- Try to load our built CSS first -->
+            <link rel="stylesheet" href="{{ $cssUrl }}" onerror="this.onerror=null; console.log('CSS failed to load, using CDN fallback');">
+            
+            <!-- Tailwind CDN as immediate fallback (works always) -->
+            <script src="https://cdn.tailwindcss.com"></script>
+            
+            <!-- Custom Tailwind configuration for CDN -->
+            <script>
+                tailwind.config = {
+                    theme: {
+                        extend: {
+                            fontFamily: {
+                                sans: ['Figtree', 'ui-sans-serif', 'system-ui'],
+                            },
+                        }
+                    }
+                }
+            </script>
             
             <!-- Debug comment in production -->
             <!-- Asset URLs: CSS={{ $cssUrl }}, JS={{ $jsUrl }}, Base={{ $baseUrl }} -->
@@ -52,17 +68,19 @@
             <!-- JS Asset -->
             <script type="module" src="{{ $jsUrl }}"></script>
             
-            <!-- Fallback CSS for critical styling -->
+            <!-- Critical CSS for immediate rendering -->
             <style>
-                /* Fallback critical CSS if main stylesheet fails to load */
+                /* Critical CSS that loads immediately */
+                body { font-family: 'Figtree', ui-sans-serif, system-ui; }
                 .min-h-screen { min-height: 100vh; }
-                .bg-gray-100 { background-color: #f7fafc; }
+                .bg-gray-100 { background-color: #f3f4f6; }
                 .bg-white { background-color: #ffffff; }
-                .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); }
+                .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
                 .px-4 { padding-left: 1rem; padding-right: 1rem; }
                 .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
                 .max-w-7xl { max-width: 80rem; }
                 .mx-auto { margin-left: auto; margin-right: auto; }
+                .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
             </style>
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -75,7 +93,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -95,7 +113,8 @@
                     jsUrl: '{{ $jsUrl ?? "N/A" }}',
                     baseUrl: '{{ $baseUrl ?? "N/A" }}',
                     appUrl: '{{ config("app.url") }}',
-                    environment: '{{ app()->environment() }}'
+                    environment: '{{ app()->environment() }}',
+                    fallback: 'Tailwind CDN active'
                 });
             </script>
         @endif
