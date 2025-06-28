@@ -19,17 +19,26 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @if(app()->environment('production') && file_exists(public_path('build/manifest.json')))
-            @php
-                $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-                $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
-                $jsFile = $manifest['resources/js/app.js']['file'] ?? null;
-            @endphp
-            @if($cssFile)
-                <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
-            @endif
-            @if($jsFile)
-                <script type="module" src="{{ asset('build/' . $jsFile) }}"></script>
+        @if(app()->environment('production'))
+            <!-- Production Assets with Render.com compatibility -->
+            @if(file_exists(public_path('build/manifest.json')))
+                @php
+                    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                    $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app-Dq_idYs2.css';
+                    $jsFile = $manifest['resources/js/app.js']['file'] ?? 'assets/app-DaBYqt0m.js';
+                    
+                    // Force absolute URLs for Render.com
+                    $baseUrl = config('app.url');
+                    if (empty($baseUrl) || $baseUrl === 'http://localhost') {
+                        $baseUrl = request()->getScheme() . '://' . request()->getHost();
+                    }
+                @endphp
+                <link rel="stylesheet" href="{{ $baseUrl }}/build/{{ $cssFile }}">
+                <script type="module" src="{{ $baseUrl }}/build/{{ $jsFile }}"></script>
+            @else
+                <!-- Fallback with hardcoded asset names -->
+                <link rel="stylesheet" href="{{ config('app.url') }}/build/assets/app-Dq_idYs2.css">
+                <script type="module" src="{{ config('app.url') }}/build/assets/app-DaBYqt0m.js"></script>
             @endif
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
