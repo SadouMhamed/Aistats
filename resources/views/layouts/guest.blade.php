@@ -7,83 +7,285 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @if(app()->environment('production'))
-            <!-- Production Assets with Render.com compatibility + CDN Fallback -->
-            @php
-                $baseUrl = config('app.url') ?: ('https://' . request()->getHost());
-                $baseUrl = str_replace('http://', 'https://', $baseUrl);
-                
-                $cssFile = 'assets/app-BePH7TFh.css';
-                $jsFile = 'assets/app-DaBYqt0m.js';
-                
-                // Try to read manifest if available
-                if (file_exists(public_path('build/manifest.json'))) {
-                    try {
-                        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-                        $cssFile = $manifest['resources/css/app.css']['file'] ?? $cssFile;
-                        $jsFile = $manifest['resources/js/app.js']['file'] ?? $jsFile;
-                    } catch (Exception $e) {
-                        // Fall back to hardcoded names if manifest fails
-                    }
-                }
-                
-                $cssUrl = $baseUrl . '/build/' . $cssFile;
-                $jsUrl = $baseUrl . '/build/' . $jsFile;
-            @endphp
-            
-            <!-- Try to load our built CSS first -->
-            <link rel="stylesheet" href="{{ $cssUrl }}" onerror="this.onerror=null; console.log('Guest CSS failed to load, using CDN fallback');">
-            
-            <!-- Tailwind CDN as immediate fallback (works always) -->
-            <script src="https://cdn.tailwindcss.com"></script>
-            
-            <!-- Custom Tailwind configuration for CDN -->
-            <script>
-                tailwind.config = {
-                    theme: {
-                        extend: {
-                            fontFamily: {
-                                sans: ['Figtree', 'ui-sans-serif', 'system-ui'],
-                            },
-                        }
-                    }
-                }
-            </script>
-            
-            <!-- JS Asset -->
-            <script type="module" src="{{ $jsUrl }}"></script>
-            
-            <!-- Critical CSS for immediate rendering -->
+            <!-- SOLUTION RENDER: CSS COMPLET INLINE - Pages Auth -->
             <style>
-                /* Critical CSS that loads immediately */
-                body { font-family: 'Figtree', ui-sans-serif, system-ui; }
+                /* RESET & BASE */
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif; line-height: 1.5; color: #111827; -webkit-font-smoothing: antialiased; }
+                
+                /* LAYOUT */
                 .min-h-screen { min-height: 100vh; }
                 .bg-gray-100 { background-color: #f3f4f6; }
                 .bg-white { background-color: #ffffff; }
-                .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+                .bg-gray-50 { background-color: #f9fafb; }
+                .bg-gray-800 { background-color: #1f2937; }
+                .bg-gray-900 { background-color: #111827; }
+                .bg-indigo-600 { background-color: #4f46e5; }
+                .bg-red-600 { background-color: #dc2626; }
+                .bg-green-600 { background-color: #059669; }
+                
+                /* TEXT COLORS */
+                .text-gray-900 { color: #111827; }
+                .text-gray-700 { color: #374151; }
+                .text-gray-600 { color: #4b5563; }
+                .text-gray-500 { color: #6b7280; }
+                .text-white { color: #ffffff; }
+                .text-indigo-600 { color: #4f46e5; }
+                .text-red-600 { color: #dc2626; }
+                
+                /* SPACING */
+                .p-2 { padding: 0.5rem; }
+                .p-4 { padding: 1rem; }
+                .p-6 { padding: 1.5rem; }
+                .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+                .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+                .px-4 { padding-left: 1rem; padding-right: 1rem; }
                 .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+                .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+                .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
                 .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+                .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+                .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+                
+                .m-2 { margin: 0.5rem; }
+                .m-4 { margin: 1rem; }
+                .mt-2 { margin-top: 0.5rem; }
+                .mt-4 { margin-top: 1rem; }
                 .mt-6 { margin-top: 1.5rem; }
-                .w-full { width: 100%; }
+                .mb-4 { margin-bottom: 1rem; }
+                .mb-6 { margin-bottom: 1.5rem; }
+                .mx-auto { margin-left: auto; margin-right: auto; }
+                
+                /* FLEXBOX */
                 .flex { display: flex; }
                 .flex-col { flex-direction: column; }
+                .flex-row { flex-direction: row; }
                 .items-center { align-items: center; }
+                .items-start { align-items: flex-start; }
                 .justify-center { justify-content: center; }
-                .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-                .text-gray-900 { color: #111827; }
-                .pt-6 { padding-top: 1.5rem; }
-                .overflow-hidden { overflow: hidden; }
+                .justify-between { justify-content: space-between; }
+                .justify-start { justify-content: flex-start; }
+                .justify-end { justify-content: flex-end; }
+                .space-x-4 > * + * { margin-left: 1rem; }
+                .space-y-4 > * + * { margin-top: 1rem; }
+                .space-y-6 > * + * { margin-top: 1.5rem; }
+                
+                /* WIDTH & HEIGHT */
+                .w-full { width: 100%; }
+                .w-auto { width: auto; }
+                .h-8 { height: 2rem; }
+                .h-10 { height: 2.5rem; }
+                .h-12 { height: 3rem; }
+                .h-16 { height: 4rem; }
+                .max-w-7xl { max-width: 80rem; }
+                .max-w-lg { max-width: 32rem; }
+                .max-w-md { max-width: 28rem; }
+                .max-w-sm { max-width: 24rem; }
+                
+                /* BORDERS & SHADOWS */
+                .border { border-width: 1px; border-color: #d1d5db; }
+                .border-gray-300 { border-color: #d1d5db; }
+                .border-gray-200 { border-color: #e5e7eb; }
+                .rounded { border-radius: 0.25rem; }
+                .rounded-md { border-radius: 0.375rem; }
+                .rounded-lg { border-radius: 0.5rem; }
+                .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+                .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+                .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+                .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+                
+                /* BUTTONS */
+                .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid transparent;
+                    border-radius: 0.375rem;
+                    font-weight: 500;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: all 0.15s;
+                    text-align: center;
+                    justify-content: center;
+                }
+                .btn-primary {
+                    background-color: #4f46e5;
+                    color: white;
+                }
+                .btn-primary:hover {
+                    background-color: #4338ca;
+                }
+                .btn-secondary {
+                    background-color: #6b7280;
+                    color: white;
+                }
+                .btn-secondary:hover {
+                    background-color: #4b5563;
+                }
+                .btn-white {
+                    background-color: white;
+                    color: #374151;
+                    border-color: #d1d5db;
+                }
+                .btn-white:hover {
+                    background-color: #f9fafb;
+                }
+                
+                /* FORMS */
+                .form-input {
+                    display: block;
+                    width: 100%;
+                    padding: 0.5rem 0.75rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.375rem;
+                    background-color: white;
+                    font-size: 0.875rem;
+                    transition: all 0.15s;
+                }
+                .form-input:focus {
+                    outline: none;
+                    border-color: #4f46e5;
+                    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+                }
+                .form-label {
+                    display: block;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    color: #374151;
+                    margin-bottom: 0.25rem;
+                }
+                .form-checkbox {
+                    width: 1rem;
+                    height: 1rem;
+                    border-radius: 0.25rem;
+                    border: 1px solid #d1d5db;
+                }
+                .form-checkbox:checked {
+                    background-color: #4f46e5;
+                    border-color: #4f46e5;
+                }
+                
+                /* AUTH SPECIFIC */
+                .auth-card {
+                    background-color: white;
+                    border-radius: 0.5rem;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    padding: 2rem;
+                    width: 100%;
+                    max-width: 28rem;
+                }
+                .auth-header {
+                    text-align: center;
+                    margin-bottom: 2rem;
+                }
+                .auth-title {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #111827;
+                    margin-bottom: 0.5rem;
+                }
+                .auth-subtitle {
+                    color: #6b7280;
+                    font-size: 0.875rem;
+                }
+                
+                /* LINKS */
+                a {
+                    color: #4f46e5;
+                    text-decoration: none;
+                    transition: color 0.15s;
+                }
+                a:hover {
+                    color: #4338ca;
+                    text-decoration: underline;
+                }
+                
+                /* UTILITIES */
+                .hidden { display: none; }
+                .block { display: block; }
+                .inline-block { display: inline-block; }
+                .text-center { text-align: center; }
+                .text-left { text-align: left; }
+                .text-right { text-align: right; }
+                .font-bold { font-weight: 700; }
+                .font-medium { font-weight: 500; }
+                .font-semibold { font-weight: 600; }
+                .text-sm { font-size: 0.875rem; }
+                .text-lg { font-size: 1.125rem; }
+                .text-xl { font-size: 1.25rem; }
+                .text-2xl { font-size: 1.5rem; }
+                .antialiased { -webkit-font-smoothing: antialiased; }
+                .leading-relaxed { line-height: 1.625; }
+                .leading-tight { line-height: 1.25; }
+                .underline { text-decoration: underline; }
+                
+                /* ALERTS & MESSAGES */
+                .alert {
+                    padding: 0.75rem 1rem;
+                    border-radius: 0.375rem;
+                    margin-bottom: 1rem;
+                    font-size: 0.875rem;
+                }
+                .alert-success {
+                    background-color: #d1fae5;
+                    color: #065f46;
+                    border: 1px solid #a7f3d0;
+                }
+                .alert-error {
+                    background-color: #fee2e2;
+                    color: #991b1b;
+                    border: 1px solid #fca5a5;
+                }
+                .text-red-600 { color: #dc2626; }
+                .text-green-600 { color: #059669; }
+                
+                /* RESPONSIVE - Mobile First */
+                @media (min-width: 640px) {
+                    .sm\\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+                    .sm\\:py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+                    .sm\\:text-sm { font-size: 0.875rem; }
+                    .sm\\:max-w-md { max-width: 28rem; }
+                    .sm\\:rounded-lg { border-radius: 0.5rem; }
+                }
+                @media (min-width: 1024px) {
+                    .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+                    .lg\\:py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+                }
+                
+                /* RENDER FIX INDICATOR */
+                .render-fix-active::before {
+                    content: "🔐 CSS Auth Inline";
+                    position: fixed;
+                    bottom: 10px;
+                    right: 10px;
+                    background: #059669;
+                    color: white;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    z-index: 9999;
+                }
             </style>
+            
+            <!-- Try to load built assets (but not critical) -->
+            @php
+                $baseUrl = config('app.url') ?: ('https://' . request()->getHost());
+                $baseUrl = str_replace('http://', 'https://', $baseUrl);
+            @endphp
+            <script type="module" src="{{ $baseUrl }}/build/assets/app-DaBYqt0m.js" onerror="console.log('JS asset failed on auth page, but CSS inline works')"></script>
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="font-sans text-gray-900 antialiased">
+    <body class="font-sans text-gray-900 antialiased render-fix-active">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
@@ -95,19 +297,5 @@
                 {{ $slot }}
             </div>
         </div>
-        
-        @if(app()->environment('production') && config('app.debug'))
-            <!-- Debug information in production with debug enabled -->
-            <script>
-                console.log('🔍 Guest Layout Asset Debug:', {
-                    cssUrl: '{{ $cssUrl ?? "N/A" }}',
-                    jsUrl: '{{ $jsUrl ?? "N/A" }}',
-                    baseUrl: '{{ $baseUrl ?? "N/A" }}',
-                    appUrl: '{{ config("app.url") }}',
-                    environment: '{{ app()->environment() }}',
-                    fallback: 'Tailwind CDN active'
-                });
-            </script>
-        @endif
     </body>
 </html>
