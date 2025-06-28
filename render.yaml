@@ -18,7 +18,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://nvaistat-laravel.onrender.com
+        value: https://aistats.onrender.com
 
       # Supabase Database Configuration
       - key: DB_CONNECTION

@@ -20,32 +20,50 @@
 
         <!-- Scripts -->
         @if(app()->environment('production'))
-            <!-- Production Assets with Render.com compatibility -->
-            @if(file_exists(public_path('build/manifest.json')))
-                @php
-                    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-                    $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app-BePH7TFh.css';
-                    $jsFile = $manifest['resources/js/app.js']['file'] ?? 'assets/app-DaBYqt0m.js';
-                    
-                    // Force HTTPS URLs for Render.com
-                    $baseUrl = config('app.url');
-                    if (empty($baseUrl) || $baseUrl === 'http://localhost') {
-                        $baseUrl = 'https://' . request()->getHost();
+            <!-- Production Assets with enhanced Render.com compatibility -->
+            @php
+                $baseUrl = config('app.url') ?: ('https://' . request()->getHost());
+                $baseUrl = str_replace('http://', 'https://', $baseUrl);
+                
+                $cssFile = 'assets/app-BePH7TFh.css';
+                $jsFile = 'assets/app-DaBYqt0m.js';
+                
+                // Try to read manifest if available
+                if (file_exists(public_path('build/manifest.json'))) {
+                    try {
+                        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                        $cssFile = $manifest['resources/css/app.css']['file'] ?? $cssFile;
+                        $jsFile = $manifest['resources/js/app.js']['file'] ?? $jsFile;
+                    } catch (Exception $e) {
+                        // Fall back to hardcoded names if manifest fails
                     }
-                    // Ensure HTTPS in production
-                    $baseUrl = str_replace('http://', 'https://', $baseUrl);
-                @endphp
-                <link rel="stylesheet" href="{{ $baseUrl }}/build/{{ $cssFile }}">
-                <script type="module" src="{{ $baseUrl }}/build/{{ $jsFile }}"></script>
-            @else
-                <!-- Fallback with hardcoded asset names -->
-                @php
-                    $fallbackUrl = config('app.url') ?: ('https://' . request()->getHost());
-                    $fallbackUrl = str_replace('http://', 'https://', $fallbackUrl);
-                @endphp
-                <link rel="stylesheet" href="{{ $fallbackUrl }}/build/assets/app-BePH7TFh.css">
-                <script type="module" src="{{ $fallbackUrl }}/build/assets/app-DaBYqt0m.js"></script>
-            @endif
+                }
+                
+                $cssUrl = $baseUrl . '/build/' . $cssFile;
+                $jsUrl = $baseUrl . '/build/' . $jsFile;
+            @endphp
+            
+            <!-- CSS Asset -->
+            <link rel="stylesheet" href="{{ $cssUrl }}">
+            
+            <!-- Debug comment in production -->
+            <!-- Asset URLs: CSS={{ $cssUrl }}, JS={{ $jsUrl }}, Base={{ $baseUrl }} -->
+            
+            <!-- JS Asset -->
+            <script type="module" src="{{ $jsUrl }}"></script>
+            
+            <!-- Fallback CSS for critical styling -->
+            <style>
+                /* Fallback critical CSS if main stylesheet fails to load */
+                .min-h-screen { min-height: 100vh; }
+                .bg-gray-100 { background-color: #f7fafc; }
+                .bg-white { background-color: #ffffff; }
+                .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); }
+                .px-4 { padding-left: 1rem; padding-right: 1rem; }
+                .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+                .max-w-7xl { max-width: 80rem; }
+                .mx-auto { margin-left: auto; margin-right: auto; }
+            </style>
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
@@ -68,5 +86,18 @@
                 {{ $slot }}
             </main>
         </div>
+        
+        @if(app()->environment('production') && config('app.debug'))
+            <!-- Debug information in production with debug enabled -->
+            <script>
+                console.log('🔍 Asset Debug Info:', {
+                    cssUrl: '{{ $cssUrl ?? "N/A" }}',
+                    jsUrl: '{{ $jsUrl ?? "N/A" }}',
+                    baseUrl: '{{ $baseUrl ?? "N/A" }}',
+                    appUrl: '{{ config("app.url") }}',
+                    environment: '{{ app()->environment() }}'
+                });
+            </script>
+        @endif
     </body>
 </html>
