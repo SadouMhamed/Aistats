@@ -8,7 +8,192 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600,700&display=swap" rel="stylesheet" />
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if(app()->environment('production'))
+        <!-- SOLUTION RENDER: CSS COMPLET INLINE - Page Welcome -->
+        <style>
+            /* RESET & BASE */
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif; line-height: 1.5; color: #111827; -webkit-font-smoothing: antialiased; }
+            
+            /* LAYOUT */
+            .min-h-screen { min-height: 100vh; }
+            .bg-gray-100 { background-color: #f3f4f6; }
+            .bg-white { background-color: #ffffff; }
+            .bg-gray-50 { background-color: #f9fafb; }
+            .bg-gray-800 { background-color: #1f2937; }
+            .bg-gray-900 { background-color: #111827; }
+            .bg-blue-600 { background-color: #2563eb; }
+            .bg-blue-500 { background-color: #3b82f6; }
+            .bg-blue-400 { background-color: #60a5fa; }
+            .bg-green-400 { background-color: #4ade80; }
+            
+            /* TEXT COLORS */
+            .text-gray-900 { color: #111827; }
+            .text-gray-800 { color: #1f2937; }
+            .text-gray-700 { color: #374151; }
+            .text-gray-600 { color: #4b5563; }
+            .text-gray-500 { color: #6b7280; }
+            .text-gray-400 { color: #9ca3af; }
+            .text-gray-300 { color: #d1d5db; }
+            .text-gray-200 { color: #e5e7eb; }
+            .text-white { color: #ffffff; }
+            .text-blue-600 { color: #2563eb; }
+            .text-blue-400 { color: #60a5fa; }
+            
+            /* SPACING */
+            .p-1 { padding: 0.25rem; } .p-2 { padding: 0.5rem; } .p-6 { padding: 1.5rem; } .p-8 { padding: 2rem; }
+            .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+            .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .px-8 { padding-left: 2rem; padding-right: 2rem; }
+            .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+            .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+            .py-32 { padding-top: 8rem; padding-bottom: 8rem; }
+            .pt-14 { padding-top: 3.5rem; }
+            .pt-16 { padding-top: 4rem; }
+            .pt-8 { padding-top: 2rem; }
+            .pb-8 { padding-bottom: 2rem; }
+            .ml-3 { margin-left: 0.75rem; }
+            .mt-2 { margin-top: 0.5rem; }
+            .mt-4 { margin-top: 1rem; }
+            .mt-6 { margin-top: 1.5rem; }
+            .mt-8 { margin-top: 2rem; }
+            .mt-10 { margin-top: 2.5rem; }
+            .mt-16 { margin-top: 4rem; }
+            .mx-auto { margin-left: auto; margin-right: auto; }
+            
+            /* FLEXBOX */
+            .flex { display: flex; }
+            .items-center { align-items: center; }
+            .justify-between { justify-content: space-between; }
+            .justify-center { justify-content: center; }
+            .space-x-4 > * + * { margin-left: 1rem; }
+            .space-y-3 > * + * { margin-top: 0.75rem; }
+            .gap-x-3 { column-gap: 0.75rem; }
+            .gap-x-6 { column-gap: 1.5rem; }
+            .gap-x-8 { column-gap: 2rem; }
+            .gap-y-10 { row-gap: 2.5rem; }
+            .gap-y-16 { row-gap: 4rem; }
+            
+            /* GRID */
+            .grid { display: grid; }
+            .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+            .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            
+            /* WIDTH & HEIGHT */
+            .w-auto { width: auto; }
+            .w-5 { width: 1.25rem; }
+            .w-6 { width: 1.5rem; }
+            .w-10 { width: 2.5rem; }
+            .h-6 { height: 1.5rem; }
+            .h-9 { height: 2.25rem; }
+            .h-10 { height: 2.5rem; }
+            .max-w-md { max-width: 28rem; }
+            .max-w-xl { max-width: 36rem; }
+            .max-w-2xl { max-width: 42rem; }
+            .max-w-4xl { max-width: 56rem; }
+            .max-w-7xl { max-width: 80rem; }
+            
+            /* BORDERS & SHADOWS */
+            .rounded-md { border-radius: 0.375rem; }
+            .rounded-lg { border-radius: 0.5rem; }
+            .rounded-3xl { border-radius: 1.5rem; }
+            .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+            .ring-1 { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+            .ring-2 { box-shadow: 0 0 0 2px #3b82f6; }
+            
+            /* BUTTONS & LINKS */
+            .hover\\:bg-blue-500:hover { background-color: #3b82f6; }
+            .hover\\:bg-white\\/20:hover { background-color: rgba(255, 255, 255, 0.2); }
+            .hover\\:text-gray-200:hover { color: #e5e7eb; }
+            
+            /* POSITIONING */
+            .absolute { position: absolute; }
+            .relative { position: relative; }
+            .inset-x-0 { left: 0; right: 0; }
+            .top-0 { top: 0; }
+            .left-0 { left: 0; }
+            .z-50 { z-index: 50; }
+            
+            /* TEXT */
+            .text-center { text-align: center; }
+            .text-sm { font-size: 0.875rem; }
+            .text-base { font-size: 1rem; }
+            .text-lg { font-size: 1.125rem; }
+            .text-xl { font-size: 1.25rem; }
+            .text-3xl { font-size: 1.875rem; }
+            .text-4xl { font-size: 2.25rem; }
+            .text-6xl { font-size: 3.75rem; }
+            .font-bold { font-weight: 700; }
+            .font-semibold { font-weight: 600; }
+            .leading-6 { line-height: 1.5; }
+            .leading-7 { line-height: 1.75; }
+            .leading-8 { line-height: 2; }
+            .tracking-tight { letter-spacing: -0.025em; }
+            
+            /* UTILITIES */
+            .block { display: block; }
+            .flex-none { flex: none; }
+            .antialiased { -webkit-font-smoothing: antialiased; }
+            .isolate { isolation: isolate; }
+            .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+            
+            /* RESPONSIVE */
+            @media (min-width: 640px) {
+                .sm\\:py-48 { padding-top: 12rem; padding-bottom: 12rem; }
+                .sm\\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
+                .sm\\:mt-20 { margin-top: 5rem; }
+                .sm\\:text-4xl { font-size: 2.25rem; }
+                .sm\\:text-6xl { font-size: 3.75rem; }
+            }
+            @media (min-width: 768px) {
+                .md\\:max-w-2xl { max-width: 42rem; }
+                .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            }
+            @media (min-width: 1024px) {
+                .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+                .lg\\:py-56 { padding-top: 14rem; padding-bottom: 14rem; }
+                .lg\\:flex { display: flex; }
+                .lg\\:flex-1 { flex: 1 1 0%; }
+                .lg\\:justify-end { justify-content: flex-end; }
+                .lg\\:text-center { text-align: center; }
+                .lg\\:max-w-4xl { max-width: 56rem; }
+                .lg\\:max-w-none { max-width: none; }
+                .lg\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .lg\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+                .lg\\:gap-y-16 { row-gap: 4rem; }
+                .lg\\:mt-24 { margin-top: 6rem; }
+                .lg\\:pt-32 { padding-top: 8rem; }
+            }
+            @media (min-width: 1280px) {
+                .xl\\:p-10 { padding: 2.5rem; }
+                .xl\\:mt-10 { margin-top: 2.5rem; }
+            }
+            
+            /* HERO BACKGROUND */
+            .hero-bg {
+                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+            }
+            
+            /* RENDER FIX INDICATOR */
+            .render-fix-active::before {
+                content: "🏠 CSS Welcome Inline";
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: #2563eb;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                z-index: 9999;
+            }
+        </style>
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
     <style>
         .hero-bg {
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop');
@@ -17,7 +202,7 @@
         }
     </style>
 </head>
-<body class="antialiased bg-gray-50 text-gray-800">
+<body class="antialiased bg-gray-50 text-gray-800 render-fix-active">
     <div class="min-h-screen">
         <!-- Header -->
         <header class="absolute inset-x-0 top-0 z-50">
