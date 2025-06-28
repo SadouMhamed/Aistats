@@ -6,7 +6,7 @@ services:
     branch: main
     repo: https://github.com/SadouMhamed/Aistats
     buildCommand: bash scripts/render-deploy.sh
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT --env=production
     envVars:
       # Laravel Configuration
       - key: APP_NAME
