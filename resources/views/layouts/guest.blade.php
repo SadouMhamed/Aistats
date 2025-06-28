@@ -33,6 +33,9 @@
             z-index: 9999;
         }
     </style>
+    
+    <!-- JavaScript Alpine.js OBLIGATOIRE pour dropdowns -->
+    @vite(['resources/js/app.js'])
 @else
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 @endif
