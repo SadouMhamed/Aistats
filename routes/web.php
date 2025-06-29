@@ -65,4 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route pour le formulaire de contact
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
+
 require __DIR__.'/auth.php';
