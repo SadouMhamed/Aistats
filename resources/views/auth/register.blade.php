@@ -10,6 +10,55 @@
             </div>
         @endif
 
+        <!-- Services à la carte Information -->
+        @if(request('devis'))
+            <div id="devis-info" class="mb-6 p-6 bg-green-50 border border-green-200 rounded-lg" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">📋 Votre demande de devis :</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">Services sélectionnés :</h4>
+                        <ul id="services-list" class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                            <!-- Services will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div>
+                            <span class="font-medium text-gray-700">Nombre d'individus :</span>
+                            <span id="nb-individus-display" class="text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Nombre de variables :</span>
+                            <span id="nb-variables-display" class="text-gray-600 font-semibold"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Délai souhaité :</span>
+                            <span id="delais-display" class="text-gray-600 font-semibold"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="remarques-section" class="mt-4" style="display: none;">
+                    <span class="font-medium text-gray-700">Remarques :</span>
+                    <p id="remarques-display" class="text-gray-600 italic mt-1"></p>
+                </div>
+                
+                <div class="mt-4 p-3 bg-blue-100 rounded-lg">
+                    <p class="text-sm text-blue-800">
+                        💡 <strong>Après votre inscription :</strong> Notre équipe recevra automatiquement votre demande de devis avec tous ces détails et vous contactera rapidement pour finaliser votre projet.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Hidden inputs for devis data -->
+            <input type="hidden" id="devis-services" name="devis_services" value="">
+            <input type="hidden" id="devis-nb-individus" name="devis_nb_individus" value="">
+            <input type="hidden" id="devis-nb-variables" name="devis_nb_variables" value="">
+            <input type="hidden" id="devis-delais" name="devis_delais" value="">
+            <input type="hidden" id="devis-remarques" name="devis_remarques" value="">
+        @endif
+
         <!-- Hidden input for the pack -->
         <input type="hidden" name="pack" value="{{ request('pack') }}">
 
@@ -120,4 +169,72 @@
             </x-primary-button>
         </div>
     </form>
+
+    @if(request('devis'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer les données du devis depuis localStorage
+            const devisData = localStorage.getItem('devis_data');
+            
+            if (devisData) {
+                try {
+                    const data = JSON.parse(devisData);
+                    
+                    // Afficher la section devis
+                    const devisInfo = document.getElementById('devis-info');
+                    if (devisInfo) {
+                        devisInfo.style.display = 'block';
+                    }
+                    
+                    // Remplir les services sélectionnés
+                    const servicesList = document.getElementById('services-list');
+                    if (data.services && data.services.length > 0) {
+                        servicesList.innerHTML = '';
+                        data.services.forEach(service => {
+                            const li = document.createElement('li');
+                            li.textContent = service;
+                            servicesList.appendChild(li);
+                        });
+                    }
+                    
+                    // Remplir les autres informations
+                    const nbIndividusDisplay = document.getElementById('nb-individus-display');
+                    if (nbIndividusDisplay) {
+                        nbIndividusDisplay.textContent = data.nb_individus || 'Non spécifié';
+                    }
+                    
+                    const nbVariablesDisplay = document.getElementById('nb-variables-display');
+                    if (nbVariablesDisplay) {
+                        nbVariablesDisplay.textContent = data.nb_variables || 'Non spécifié';
+                    }
+                    
+                    const delaisDisplay = document.getElementById('delais-display');
+                    if (delaisDisplay) {
+                        delaisDisplay.textContent = data.delais || 'Non spécifié';
+                    }
+                    
+                    // Afficher les remarques si présentes
+                    if (data.remarques && data.remarques.trim()) {
+                        const remarquesSection = document.getElementById('remarques-section');
+                        const remarquesDisplay = document.getElementById('remarques-display');
+                        if (remarquesSection && remarquesDisplay) {
+                            remarquesDisplay.textContent = data.remarques;
+                            remarquesSection.style.display = 'block';
+                        }
+                    }
+                    
+                    // Remplir les champs cachés pour l'envoi du formulaire
+                    document.getElementById('devis-services').value = JSON.stringify(data.services);
+                    document.getElementById('devis-nb-individus').value = data.nb_individus || '';
+                    document.getElementById('devis-nb-variables').value = data.nb_variables || '';
+                    document.getElementById('devis-delais').value = data.delais || '';
+                    document.getElementById('devis-remarques').value = data.remarques || '';
+                    
+                } catch (error) {
+                    console.error('Erreur lors du parsing des données de devis:', error);
+                }
+            }
+        });
+    </script>
+    @endif
 </x-guest-layout>

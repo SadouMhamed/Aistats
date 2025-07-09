@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'AIStats') }}</title>
         
         <!-- Favicon -->
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
@@ -55,7 +55,8 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                {{ $slot ?? '' }}
+                @yield('content')
             </main>
         </div>
     </body>

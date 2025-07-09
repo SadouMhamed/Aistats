@@ -74,7 +74,7 @@
                             <h4 class="font-semibold mb-3 text-gray-800">📨 Fichiers reçus</h4>
                             @if($receivedFiles->count() > 0)
                                 <div class="space-y-2">
-                                    <a href="{{ route('received_files.index') }}" class="flex items-center text-purple-600 hover:text-purple-800">
+                                    <a href="{{ route('user.received_files.index') }}" class="flex items-center text-purple-600 hover:text-purple-800">
                                         📥 Voir tous les fichiers reçus
                                         @if($unreadReceivedFiles > 0)
                                             <span class="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">{{ $unreadReceivedFiles }} nouveau(x)</span>

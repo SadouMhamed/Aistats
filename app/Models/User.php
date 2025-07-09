@@ -30,6 +30,11 @@ class User extends Authenticatable
         'meeting_preference',
         'payment_preference',
         'payment_status',
+        'devis_services',
+        'devis_nb_individus',
+        'devis_nb_variables',
+        'devis_delais',
+        'devis_remarques',
     ];
 
     /**
@@ -52,6 +57,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'devis_services' => 'array',
         ];
     }
 
@@ -93,6 +99,46 @@ class User extends Authenticatable
     public function sentFiles()
     {
         return $this->hasMany(AdminUserFile::class, 'admin_id');
+    }
+
+    /**
+     * Get devis for this user
+     */
+    public function devis()
+    {
+        return $this->hasMany(Devis::class);
+    }
+
+    /**
+     * Get factures for this user
+     */
+    public function factures()
+    {
+        return $this->hasMany(Facture::class);
+    }
+
+    /**
+     * Get devis created by this admin
+     */
+    public function devisCreated()
+    {
+        return $this->hasMany(Devis::class, 'admin_id');
+    }
+
+    /**
+     * Get factures created by this admin
+     */
+    public function facturesCreated()
+    {
+        return $this->hasMany(Facture::class, 'admin_id');
+    }
+
+    /**
+     * Check if user has services à la carte data
+     */
+    public function hasServicesCarteDemande(): bool
+    {
+        return !empty($this->devis_services);
     }
 
     /**

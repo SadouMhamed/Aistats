@@ -94,6 +94,30 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Client Management Section -->
+                    <div class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-3">
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-700">Gestion des clients</h4>
+                            <a href="{{ route('admin.clients.services') }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                📋 Clients Services à la Carte
+                            </a>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-700">Gestion des devis</h4>
+                            <a href="{{ route('admin.devis.index') }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 focus:bg-orange-700 active:bg-orange-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                                💰 Tous les devis
+                            </a>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-700">Facturation</h4>
+                            <a href="{{ route('admin.factures.index') }}" class="inline-flex items-center justify-center w-full px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                🧾 Factures
+                            </a>
+                        </div>
+                    </div>
                     <div class="mt-4">
                         <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-600 border border-transparent rounded-md hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                             🏠 Voir Dashboard utilisateur

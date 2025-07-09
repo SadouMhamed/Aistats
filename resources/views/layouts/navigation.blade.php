@@ -23,8 +23,16 @@
 
                     <!-- User Received Files Link -->
                     @if(!auth()->user()->isAdmin())
-                        <x-nav-link :href="route('received_files.index')" :active="request()->routeIs('received_files.*')">
+                        <x-nav-link :href="route('user.received_files.index')" :active="request()->routeIs('user.received_files.*')">
                             📨 {{ __('Fichiers Reçus') }}
+                        </x-nav-link>
+                        
+                        <!-- Client Devis & Factures Links -->
+                        <x-nav-link :href="route('client.devis.index')" :active="request()->routeIs('client.devis.*')">
+                            📄 {{ __('Mes Devis') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('client.factures.index')" :active="request()->routeIs('client.factures.*')">
+                            🧾 {{ __('Mes Factures') }}
                         </x-nav-link>
                     @endif
 
@@ -107,8 +115,20 @@
                             ⬆️ {{ __('Télécharger un fichier') }}
                         </x-dropdown-link>
                         @if(!auth()->user()->isAdmin())
-                            <x-dropdown-link :href="route('received_files.index')">
+                            <x-dropdown-link :href="route('user.received_files.index')">
                                 📨 {{ __('Fichiers Reçus') }}
+                            </x-dropdown-link>
+                            
+                            <!-- Client Devis & Factures Quick Links -->
+                            <div class="border-t border-gray-100"></div>
+                            <div class="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide">
+                                {{ __('Devis & Factures') }}
+                            </div>
+                            <x-dropdown-link :href="route('client.devis.index')">
+                                📄 {{ __('Mes Devis') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('client.factures.index')">
+                                🧾 {{ __('Mes Factures') }}
                             </x-dropdown-link>
                         @endif
 
@@ -180,8 +200,16 @@
             
             <!-- User Received Files Link for Mobile -->
             @if(!auth()->user()->isAdmin())
-                <x-responsive-nav-link :href="route('received_files.index')" :active="request()->routeIs('received_files.*')">
+                <x-responsive-nav-link :href="route('user.received_files.index')" :active="request()->routeIs('user.received_files.*')">
                     📨 {{ __('Fichiers Reçus') }}
+                </x-responsive-nav-link>
+                
+                <!-- Client Devis & Factures Links for Mobile -->
+                <x-responsive-nav-link :href="route('client.devis.index')" :active="request()->routeIs('client.devis.*')">
+                    📄 {{ __('Mes Devis') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('client.factures.index')" :active="request()->routeIs('client.factures.*')">
+                    🧾 {{ __('Mes Factures') }}
                 </x-responsive-nav-link>
             @endif
 
